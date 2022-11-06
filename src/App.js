@@ -20,12 +20,12 @@ function App() {
         { path: 'userDashboard/home', element: user?.emailVerified && <Home></Home> },
         { path: 'userDashboard/profile', element: user?.emailVerified && <Profile user={user}></Profile> },
         { path: 'userDashboard/chat', element: user?.emailVerified && <Chat></Chat> },
-        { path: 'userDashboard/postManagement', element: user?.emailVerified && <PostManagement></PostManagement> },
+        { path: 'userDashboard/postManagement', element: user?.emailVerified && <PostManagement user={user}></PostManagement> },
       ]
     },
 
     { path: '/registration', element: <Registration></Registration> },
-    { path: '/*', element: <div>not found</div> }
+    { path: '*', element: <div>not found</div> }
   ])
   return (
     <div className="App">
