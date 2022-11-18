@@ -19,11 +19,10 @@ function App() {
       path: '/userDashboard', element: user?.emailVerified && <UserDashboard user={user}></UserDashboard>, children: [
         { path: 'userDashboard/home', element: user?.emailVerified && <Home></Home> },
         { path: 'userDashboard/profile', element: user?.emailVerified && <Profile user={user}></Profile> },
-        { path: 'userDashboard/chat', element: user?.emailVerified && <Chat></Chat> },
-        { path: 'userDashboard/postManagement', element: user?.emailVerified && <PostManagement user={user}></PostManagement> },
-      ]
+        { path: 'userDashboard/chat', element: user?.emailVerified && <Chat user={user}></Chat> },
+        { path: 'userDashboard/postManagement', element: user?.emailVerified && <PostManagement user={user}></PostManagement>}
+      ],
     },
-
     { path: '/registration', element: <Registration></Registration> },
     { path: '*', element: <div>not found</div> }
   ])

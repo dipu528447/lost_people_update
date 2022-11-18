@@ -10,6 +10,7 @@ const Home = props => {
     const [loadedPost, setLoadedPost] = useState([]);
     useEffect(() => {
         setLoading(true);
+        
         console.log('loading')
         const unsub = onSnapshot(
             collection(db, "post"),
@@ -60,7 +61,7 @@ const Home = props => {
             </div>
             {loadedPost.map(post => {
                 return (
-                    <div className='container mx-auto my-12'>
+                    <div className='container mx-auto my-12' key={post.id}>
                         <div className="card lg:card-side bg-base-100 shadow-xl lg:mx-24 p-10">
                             <figure><img src={post.lost_person_img} className='h-3/4 w-full border-8 border-secondary' alt="Album" /></figure>
                             <div className="card-body">

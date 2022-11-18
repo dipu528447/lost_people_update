@@ -15,8 +15,8 @@ const UserDashboard = props => {
                         <ul tabIndex={0} className="menu menu-compact dropdown-content mt-3 ml-6 p-2 shadow bg-base-100 rounded-box w-52">
                             <Link to="userDashboard/home"><li><label>Home</label></li></Link>
                             <Link to="userDashboard/postManagement"><li><label>Post Management</label></li></Link>
-                            <Link to="userDashboard/profile"><li><label>Profile</label></li></Link>
-                            <Link to="userDashboard/chat"><li><label className='text-left'>Chat<sup className='text-pink-500'>99</sup></label></li></Link>
+                            {user.email!=="admin@admin.com"&&<Link to="userDashboard/profile"><li><label>Profile</label></li></Link>}
+                            <Link to="userDashboard/chat"><li><label className='text-left'>Chat</label></li></Link>
                             <Link to="/"><li><label onClick={() => localStorage.setItem('user', JSON.stringify(''))}>Logout</label></li></Link>
                         </ul>
                     </div>
