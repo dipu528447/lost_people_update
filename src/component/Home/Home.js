@@ -8,6 +8,12 @@ const Home = props => {
     const [loading, setLoading] = useState(false);
     const [posts, setPosts] = useState([]);
     const [loadedPost, setLoadedPost] = useState([]);
+    const districts=["Dhaka","Chattogram","Rajshahi","Sylhet","jessore","Dinajpur","Mymensingh","Comilla","Barisal",
+                    "Faridpur","Bogra","Pabna","Rangamati","Kushtia","Rangpur","Noakhali","Khulna","Tangail","Panchagarh","Bhola","Bandarban",
+                    "Chandpur","Habiganj","Lakshmipur","Barguna","Jhalokati","Pirojpur","Patuakhali","Jhenaidah","Narail","Magura","Lalmonirhat",
+                    "Kurigram","Nilphamari","Gaibanda","Thakurgaon","Satkhira","Bagerhat","Chuadanga","Meherpur","Sirajganj","Joypurhat","Natore",
+                    "Naogaon","Nawabganj","Khagrachhari","Feni","Brahmanbaria","Sunamganj","Cox's Bazar","Moulvibazar","Gopalganj","Shariatpur",
+                    "Madaripur","Rajbari","Gazipur","Kishoreganj","Jamalpur","Sherpur","Netrakona","Munshiganj","Narsingdi","Narayanganj","Manikganj"]
     useEffect(() => {
         setLoading(true);
         
@@ -27,6 +33,7 @@ const Home = props => {
         );
         return () => {
             unsub();
+            
         }
     }, [])
     function getActive(district) {
@@ -47,16 +54,11 @@ const Home = props => {
     return (
 
         <div>
-            <div className="container mx-auto w-1/2">
+            <div className="container mx-auto w-5/6">
                 <div className="tabs">
                     <label className="tab tab-lifted tab-active" id="All" onClick={() => getActive("All")}>All</label>
-                    <label className="tab tab-lifted" id="Dhaka" onClick={() => getActive("Dhaka")}>Dhaka</label>
-                    <label className="tab tab-lifted" id="Chattogram" onClick={() => getActive("Chattogram")}>Chattogram</label>
-                    <label className="tab tab-lifted" id="Rajshahi" onClick={() => getActive("Rajshahi")}>Rajshahi</label>
-                    <label className="tab tab-lifted" id="Khulna" onClick={() => getActive("Khulna")}>Khulna</label>
-                    <label className="tab tab-lifted" id="Barisal" onClick={() => getActive("Barisal")}>Barisal</label>
-                    <label className="tab tab-lifted" id="Sylhet" onClick={() => getActive("Sylhet")}>Sylhet</label>
-                    <label className="tab tab-lifted" id="Nowakhali" onClick={() => getActive("Nowakhali")}>Nowakhali</label>
+                    {districts.map(district=><label className="tab tab-lifted" id={district} onClick={() => getActive(district)}>{district}</label>)}
+                    
                 </div>
             </div>
             {loadedPost.map(post => {

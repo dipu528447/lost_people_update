@@ -3,6 +3,8 @@ import { Link, useNavigate } from 'react-router-dom'
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { FacebookAuthProvider } from "firebase/auth";
+import { collection, onSnapshot } from 'firebase/firestore';
+import { db } from '../../firebase';
 
 const Login = props => {
     const [email, setEmail] = useState('');
@@ -23,34 +25,71 @@ const Login = props => {
             return ''
         }
         if(email==='admin@admin.com' && password ==='123456'){
+            
             setMsg('loggod in as an admin');
-            const user={
-                displayName:"admin",
-                email:'admin@admin.com',
-                photoURL:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCmsJlDBKWc7C-DPa83GG8Si2t49CEkm_PLEolAAy3VaxATEi9pOmUtRkj2JcNbPxR3i0&usqp=CAU",
-                emailVerified:true,
+
+            const unsub = onSnapshot(
+                collection(db, "users"),
+                (snapshot) => {
+                    let list = [];
+                    snapshot.docs.forEach((doc) => {
+                        list.push({id:doc.id,...doc.data() })
+                    });
+                    console.log(list)
+                    const user=list.find(item=>item.email=="admin@admin.com")
+                    console.log(user)
+                    user.emailVerified=true
+                    
+                    setUser(user)
+                    localStorage.setItem('user', JSON.stringify(user));
+                    user.emailVerified ? navigate('/userDashboard') : navigate('/');
+                }, (error) => {
+                    console.log(error);
+                }
+            );
+            return () => {
+                unsub();
+                setEmail('')
+                setPassword('')
             }
-            setUser(user)
-            localStorage.setItem('user', JSON.stringify(user));
-            user.emailVerified ? navigate('/userDashboard/userDashboard/home') : navigate('/');
+           
         }
+        else{
         signInWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
                 // Signed in 
                 const user = userCredential.user;
                 user.photoURL="https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-512.png";
                 console.log(email);
-                setUser(user)
-                localStorage.setItem('user', JSON.stringify(user));
-                user.emailVerified ? navigate('/userDashboard/userDashboard/home') : navigate('/');
-                // ...
-            })
+
+                const unsub = onSnapshot(
+                    collection(db, "users"),
+                    (snapshot) => {
+                        let list = [];
+                        snapshot.docs.forEach((doc) => {
+                            list.push({id:doc.id,...doc.data() })
+                        });
+                        console.log(list)
+                        const up_user=list.find(item=>item.email==email)
+                        const do_up_user={
+                            emailVerified:user.emailVerified,...up_user
+                        }
+                       
+                        setUser(do_up_user)
+                        localStorage.setItem('user', JSON.stringify(do_up_user));
+                        do_up_user.emailVerified ? navigate('/userDashboard') : navigate('/');
+                    }, (error) => {
+                        console.log(error);
+                    }
+                )}
+            )
             .catch((error) => {
                 // const errorCode = error.code;
                 // const errorMessage = error.message;
-                navigate('/userDashboard/userDashboard/home')
+                navigate('/userDashboard/userDashboard')
                 setMsg('Invalid user and password')
             });
+        }
     }
     function loginwithFacebook(event) {
         event.preventDefault();
@@ -63,8 +102,9 @@ const Login = props => {
                 const { user } = result;
                 user.emailVerified = true;
                 setUser(user);
+                
                 localStorage.setItem('user', JSON.stringify(user));
-                navigate("/userDashboard/userDashboard/home")
+                navigate("/userDashboard")
             })
             .catch((error) => {
                 //const errorCode = error.code;

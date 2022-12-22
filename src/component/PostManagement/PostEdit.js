@@ -1,6 +1,12 @@
 import React from 'react';
 
 const PostEdit = () => {
+    const districts=["Dhaka","Chattogram","Rajshahi","Sylhet","jessore","Dinajpur","Mymensingh","Comilla","Barisal",
+                    "Faridpur","Bogra","Pabna","Rangamati","Kushtia","Rangpur","Noakhali","Khulna","Tangail","Panchagarh","Bhola","Bandarban",
+                    "Chandpur","Habiganj","Lakshmipur","Barguna","Jhalokati","Pirojpur","Patuakhali","Jhenaidah","Narail","Magura","Lalmonirhat",
+                    "Kurigram","Nilphamari","Gaibanda","Thakurgaon","Satkhira","Bagerhat","Chuadanga","Meherpur","Sirajganj","Joypurhat","Natore",
+                    "Naogaon","Nawabganj","Khagrachhari","Feni","Brahmanbaria","Sunamganj","Cox's Bazar","Moulvibazar","Gopalganj","Shariatpur",
+                    "Madaripur","Rajbari","Gazipur","Kishoreganj","Jamalpur","Sherpur","Netrakona","Munshiganj","Narsingdi","Narayanganj","Manikganj"]
     return (
         <div>
             <p>Please Edit The Details of Your Published Post</p>
@@ -21,16 +27,14 @@ const PostEdit = () => {
                             <input type="text" placeholder="Lost Person's Last Location (Example: Sanman Shopping Mall, GEC, Chattogram" className="input input-bordered w-full" required name='last_location' onChange={handleChange} />
                         </label>
                         <label className="input-group m-2">
-                            <span className='w-1/5'>Division</span>
+                            <span className='w-1/5'>District</span>
                             <select className="select w-full max-w-lg input=bordered" onChange={handleChange} name='division'>
-                                <option disabled selected>Choose Division</option>
-                                <option value="Dhaka">Dhaka</option>
-                                <option value="Chattogram">Chattogram</option>
-                                <option value="Rajshahi">Rajshahi</option>
-                                <option value="Khulna">Khulna</option>
-                                <option value="Barisal">Barishal</option>
-                                <option value="Sylhet">Sylhet</option>
-                                <option value="Nowakhali">Nowakhali</option>
+                                <option value={''} >Choose District</option>
+                                {districts.map(district=><option value={district}>{district}</option>)}
+                                
+                                {/* <option value="Rangpur">Rangpur</option>
+                                <option value="Cox's Bazar">Cox's Bazar</option>
+                                <option value="Kustia">Kustia</option> */}
                             </select>
                         </label>
                         <label className="input-group m-2">

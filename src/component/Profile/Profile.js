@@ -1,26 +1,28 @@
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import React, { useEffect, useState } from 'react';
 import { db, storage } from './../../firebase'
-import { addDoc, serverTimestamp, collection } from 'firebase/firestore'
+import { addDoc, serverTimestamp, collection, updateDoc, doc } from 'firebase/firestore'
 
 const Profile = ({ user }) => {
 
     const initialState = {
-        displayeName: "",
+        displayName: "",
         email: user.email,
         present_address: "",
         permanent_address: "",
         nid: "",
-        contact: ""
+        contact: "",
+        password:"",
+        id:user.id
 
     }
     const [data, setData] = useState(initialState);
-    const { displayName, email, permanent_address, present_address, contact, nid } = data;
+    const { displayName, email, permanent_address, present_address, contact, nid ,password,id} = data;
     const [file, setFile] = useState(null);
     const [progress, setProgress] = useState(null);
     const [errors, setErrors] = useState({});
     const [isSubmit, setIsSubmit] = useState(false);
-
+    
     useEffect(() => {
         const uploadFile = () => {
             const name = new Date().getTime() + file.name;
@@ -43,14 +45,14 @@ const Profile = ({ user }) => {
                 console.log(error)
             }, () => {
                 getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-                    setData((prev) => ({ ...prev, profile_pic: downloadURL }));
+                    setData((prev) => ({ ...prev, photoURL: downloadURL }));
                 });
             })
 
         }
         file && uploadFile()
     }, [file])
-
+    
     const handleChange = (e) => {
         setData({ ...data, [e.target.name]: e.target.value })
     }
@@ -58,12 +60,22 @@ const Profile = ({ user }) => {
         e.preventDefault();
         // let errors = validate();
         // if (Object.keys(errors).length) return setErrors(errors);
-        setIsSubmit(true);
-        await addDoc(collection(db, 'users'), {
-            ...data,
-            timeStamp: serverTimestamp(),
-        });
-        alert('saved successfully');
+        if(id){
+        
+            try{
+                console.log(data,email)
+                setIsSubmit(true);
+                await updateDoc(doc(db, 'users',id), {
+                    ...data
+                });
+                alert('saved successfully');
+            }
+            catch(err){
+                console.log(err)
+            }
+        }
+       
+        
     }
     return (
         <div>
